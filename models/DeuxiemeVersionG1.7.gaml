@@ -17,11 +17,23 @@ global {
 	int nbreArbre;												// nombre d'arbre
 	int nbreBatiment;											// nombre de batiment
 	int nbreFeu;												// nombre de feu au debut
-	int intervalPropagation;											// intervalle de propagation du feu
+	int intervalPropagation;									// intervalle de propagation du feu
 	int dureeCremationArbre const: true <- 1000; 				// temps nécessaire pourqu'un arbre se consomme totalement
  	int dureeCremationBatiment const: true <- 1500; 			// temps nécessaire pourqu'un batiment se consomme totalement
- 
+ 	
+ 	int nb_feu -> {length (feu)};								// nombre de feu crees au cours de la simulation
 
+
+	
+	float percepSubjectivityPeur <- 3.0;		// peureux
+	
+	float dangerFamNonFami  <- 0.1;				// non familier
+	
+	float dangerFamExp  <- 0.8;					// familier
+	
+	float percepSubjectivityOpti <- 0.5;		// optimiste
+		
+	float percepSubjectivityObjectif <- 1.0;	// objectif
 	
 	
 	init{
@@ -58,6 +70,18 @@ global {
 		create batiment number: 10
 		{
 		}
+		
+		create habitantGenerique number: 1
+		{
+		}
+		
+		
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityPeur]; 		// creation agent craintif et non experimente
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityPeur]; 			// creation agent craintif et experimente
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityOpti]; 		// creation agent optimiste et non experimente
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityOpti]; 			// creation agent optimiste et  experimente
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityObjectif]; 	// creation agent objectif et non experimente
+		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityObjectif]; 	// creation agent objectif et experimente
 	}
 }
 
@@ -71,21 +95,57 @@ global {
 	} 
 	
 	//Habitant fictif
- species habitantFictif parent: position
+ species habitantGenerique parent: position
 	{
 		int size const:true <- 2; 										// taille d'un habitant
 		int rayonPerception <- 50;										// rayon de perception d'un habiatant  a 360 degre
 		float fearEnv <- 0.0;											// le niveau d'intensite de la peur chez un individu
-		float dangerFam const:true <- 0.0 min:0.01 max:1.0;				// la familiarite de l'individu avec le danger (plus ce cof est proche de 1, plus l'individu est familier. Dans le cas contraire cad proche 0 il est peu familier)
-		float percepSubjectivity const:true <- 0.0 min:0.01 max:10.0;	// la perception surjective d'un individu face a la dangeriosite de l'enviroennement (si ce cof est inferieur a 1, alors l'agent est optimiste et prend moins consceince du danger. Sinon il est pessimiste et peureux)
+		float dangerFam const:true <- 0.5 min:0.01 max:1.0;				// la familiarite de l'individu avec le danger (plus ce cof est proche de 1, plus l'individu est familier. Dans le cas contraire cad proche 0 il est peu familier)
+		float percepSubjectivity const:true <- 0.8 min:0.01 max:10.0;	// la perception surjective d'un individu face a la dangeriosite de l'enviroennement (si ce cof est inferieur a 1, alors l'agent est optimiste et prend moins consceince du danger. Sinon il est pessimiste et peureux)
 		bool effetBascule <- false;										// permet de savoir si l'individu a pris conscience du danger
-
+		float dangerEnvSurjectif <- 0.0;								// niveau de dangeriosite sujective d'un individu
+		
+		list<feu> listFeu <- [];
+		
+		
 		init
 		{
 		
 			x <- rnd(width_and_height_of_environment - 2 * size) + size;
 			y <- rnd(width_and_height_of_environment - 2 * size) + size;
 			location <- point(x, y);
+		}
+		
+		
+		reflex MiseAJourNiveauPeur when: !empty(feu at_distance rayonPerception){
+			ask feu at_distance rayonPerception{
+				
+				if(!(myself.listFeu contains self)){
+					
+					add self to: myself.listFeu;
+					
+				}
+				
+			}
+			
+			float distance <-0.0;    // declaration d'une variable temporaire pour le calcul de la distance de l'individu avec un foyer de feu
+			list<feu> listFeuPriorise <-[];
+			loop f over: listFeu{
+				
+					// Pemier test en considerant le numero d'apparition du feu
+					distance <- sqrt((self.location.x - f.location.x) * (self.location.x - f.location.x) + (self.location.y - f.location.y) * (self.location.y - f.location.y));
+					dangerEnvSurjectif <- dangerEnvSurjectif + (f.size / ((listFeu index_of f) +1) * distance);
+					write(dangerEnvSurjectif);
+			
+			}
+			write("Apres la boucle");
+			write(dangerEnvSurjectif);
+			dangerEnvSurjectif <- percepSubjectivity * dangerEnvSurjectif;
+			write("Dangeriosite surjective");
+			write(dangerEnvSurjectif);
+			fearEnv <- 1 / (1+ exp(6-(1-dangerFam) * dangerEnvSurjectif));
+			write(fearEnv);
+			
 		}
 
 		aspect base
@@ -260,14 +320,33 @@ experiment declenchement type: gui {
 			species batimentDetruit aspect: base;
 		}
 		
+		monitor "Nombre de feu" value: nb_feu;
+		
 		display ChartDangeriositeEnvironnment
 		{
 			chart "Dangeriosite objective de l'environnement" {
 				data "nombre de foyers de feu" value: length(feu) color: #black;
 			}
 		}
- 		
+		
+		display ChartDangeriositeEnvironnment
+		{
+			chart "Dangeriosite objective de l'environnement" {
+				data "nombre de foyers de feu" value: length(feu) color: #black;
+			}
+			
+			
+			chart " Niveau de peur de differents profils " type: series background: #white position: {0,0.66} size:{1,0.33}x_range: 1000{
+				data "craintif et non experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamNonFami and each.percepSubjectivity=percepSubjectivityPeur)).fearEnv color: #green ;
+				data "craintif et experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamExp and each.percepSubjectivity=percepSubjectivityPeur)).fearEnv color: #red ;
+				data "optimiste et non experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamNonFami and each.percepSubjectivity=percepSubjectivityOpti)).fearEnv color: #yellow ;
+				data "optimiste et experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamExp and each.percepSubjectivity=percepSubjectivityOpti)).fearEnv color: #blue ;
+				data "objectif et non experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamNonFami and each.percepSubjectivity=percepSubjectivityObjectif)).fearEnv color: #brown ;
+				data "objectif et experimente" value: first(habitantGenerique where (each.dangerFam=dangerFamExp and each.percepSubjectivity=percepSubjectivityObjectif)).fearEnv color: #violet ;
+			}
+			
+			
 		}
-	
+	}
 }
 
