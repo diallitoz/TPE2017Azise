@@ -71,17 +71,12 @@ global {
 		{
 		}
 		
-		create habitantGenerique number: 1
-		{
-		}
-		
-		
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityPeur]; 		// creation agent craintif et non experimente
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityPeur]; 			// creation agent craintif et experimente
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityOpti]; 		// creation agent optimiste et non experimente
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityOpti]; 			// creation agent optimiste et  experimente
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityObjectif]; 	// creation agent objectif et non experimente
-		create habitantGenerique number: 1 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityObjectif]; 	// creation agent objectif et experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityPeur, color::#orange]; 		// creation agent craintif et non experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityPeur,color::#moccasin]; 			// creation agent craintif et experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityOpti,color::#yellow]; 		// creation agent optimiste et non experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityOpti,color::#brown]; 			// creation agent optimiste et  experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityObjectif,color::#violet]; 	// creation agent objectif et non experimente
+		create habitantGenerique number: 2 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityObjectif,color::#indigo]; 	// creation agent objectif et experimente
 	}
 }
 
@@ -150,7 +145,7 @@ global {
 
 		aspect base
 		{
-			draw circle(size);
+			draw circle(size) color:color;
 		}
 
 
@@ -240,7 +235,7 @@ species feu parent: position skills: [moving]{
 } 
 
 // ceci est un batiment 
-species batiment parent: position control: fsm
+species batiment parent: position
 {
 	int size <- 10 + rnd(5);
 	init
@@ -258,7 +253,7 @@ species batiment parent: position control: fsm
 } 
 
 
-species abri parent: position control: fsm
+species abri parent: position
 {
 	int size <- 50 ;
 	init
@@ -318,6 +313,7 @@ experiment declenchement type: gui {
 			species abri aspect: base;
 			species arbreMort aspect: base;
 			species batimentDetruit aspect: base;
+			species habitantGenerique aspect: base;
 		}
 		
 		monitor "Nombre de feu" value: nb_feu;
