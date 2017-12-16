@@ -1,11 +1,11 @@
 /**
-* Name: DeuxiemeVersionG17
+* Name: modele3IntegrationAgentPeopleSansPropagationFeu
 * Author: DIALLO Azise Oumar
-* Description: Implementation du modele mathematique relatif a la condition du declenchement de la peur face au danger
+* Description: 3e modele en integrant les agents people dans le 1er modele cad sans la propagation du feu.
 * Tags: Tag1, Tag2, TagN
 */
 
-model DeuxiemeVersionG17
+model modele3IntegrationAgentPeopleSansPropagationFeu
 
 /* Insert your model definition here */
 
@@ -94,7 +94,9 @@ global {
 		create habitantGenerique number: 10 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityOpti,color::#yellow]; 			// creation agent optimiste et non experimente
 		create habitantGenerique number: 10 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityOpti,color::#brown]; 				// creation agent optimiste et  experimente
 		create habitantGenerique number: 10 with:[dangerFam::dangerFamNonFami, percepSubjectivity::percepSubjectivityObjectif,color::#violet]; 		// creation agent objectif et non experimente
-		create habitantGenerique number: 10 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityObjectif,color::#indigo]; 			// creation agent objectif et experimente
+		create habitantGenerique number: 10 with:[dangerFam::dangerFamExp, percepSubjectivity::percepSubjectivityObjectif,color::#indigo]{
+			
+		} 			// creation agent objectif et experimente
 	}
 	
 	reflex MAJlistAgent{
@@ -160,6 +162,9 @@ global {
 			dangerEnvCraintifNonExperimente <- dangerEnvCraintifNonExperimente / length(listCraintifNonExperimente);
 			fearEnvCraintifNonExperimente <- fearEnvCraintifNonExperimente / length(listCraintifNonExperimente);
 		}
+		
+		//dangerEnvCraintifNonExperimente <- mean(listCraintifNonExperimente collect(each.dangerEnvSurjectif));
+		
 		
 		
 		//Agent CraintifExperimente
@@ -258,6 +263,7 @@ global {
 				if(!(myself.listFeu contains self)){
 					
 					add self to: myself.listFeu;
+					
 				}
 				
 			}
@@ -270,7 +276,7 @@ global {
 				loop f over: listFeu{
 				
 					// Pemier test en considerant le numero d'apparition du feu
-					distance <- sqrt((self.location.x - f.location.x) * (self.location.x - f.location.x) + (self.location.y - f.location.y) * (self.location.y - f.location.y));
+					distance <- distance_to(self,f);// sqrt((self.location.x - f.location.x) * (self.location.x - f.location.x) + (self.location.y - f.location.y) * (self.location.y - f.location.y));
 					
 					dangerouness <-f.size / (((listFeu index_of f) +1) * distance); // calcul de la dangeriosite objective d'un element feu
 					
@@ -443,7 +449,7 @@ species batimentDetruit parent: position
 
 
 
-experiment declenchement type: gui {
+experiment declenchementSansPropagationFeu type: gui {
 	
 	parameter "nombre d'arbres" var: nbreArbre <- 100 min: 50 max: 500 category: "Environment"; 				// parametre d'entree pour definir le nombre d'arbre a creer au debut de la simulation. Par defaut c'est 100
 	parameter "nombre de feux" var: nbreFeu <- 50 min: 10 max: 500 category: "Environment";						// parametre d'entree pour definir le nombre de feu au debut de la simulation. par defaut 10 foyers sont crees
@@ -592,4 +598,3 @@ experiment declenchement type: gui {
 		
 	}
 }
-
