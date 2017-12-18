@@ -449,7 +449,7 @@ species batimentDetruit parent: position
 
 
 
-experiment declenchementSansPropagationFeu type: gui {
+experiment declenchementPropagationFeu type: gui {
 	
 	parameter "nombre d'arbres" var: nbreArbre <- 100 min: 50 max: 500 category: "Environment"; 				// parametre d'entree pour definir le nombre d'arbre a creer au debut de la simulation. Par defaut c'est 100
 	parameter "nombre de feux" var: nbreFeu <- 50 min: 10 max: 500 category: "Environment";						// parametre d'entree pour definir le nombre de feu au debut de la simulation. par defaut 10 foyers sont crees

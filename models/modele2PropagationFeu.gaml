@@ -40,11 +40,17 @@ global {
 		}
 		
 		// start fires
+		
+		ask (nbreFeu among arbre) {
+        	state<-'burning';
+        }
+        
+        /*
 		ask target: nbreFeu among (arbre as list)
 		{
 			set state value: 'burning';
 		}
-		
+		*/
 
 	}
 }
@@ -61,9 +67,7 @@ species inflammable control: fsm{
 		
 		state intact initial: true
 		{
-			
 			color<- color;
-
 		}
 
 		state burning

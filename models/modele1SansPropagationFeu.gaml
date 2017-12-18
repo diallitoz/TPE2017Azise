@@ -42,12 +42,15 @@ global {
 		}
 		
 		// start fires
+		/*
 		ask target: nbreFeu among (arbre as list)
 		{
 			set state value: 'burning';
 		}
-		
-		set nb_feu value:length (listArbreEnFeu);
+		*/
+		ask (nbreFeu among arbre) {
+        	state<-'burning';
+        }
 
 	}
 }

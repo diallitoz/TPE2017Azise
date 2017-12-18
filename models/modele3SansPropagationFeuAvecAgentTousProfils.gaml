@@ -28,6 +28,17 @@ global {
  	list<arbre> listArbreEnFeu;
  	
  	int nbreAgentProfil;
+ 	
+ 	point Pt1 <-point((width_and_height_of_environment/5),(width_and_height_of_environment/5));
+ 	point Pt2 <-point((width_and_height_of_environment/5),(width_and_height_of_environment/2));
+ 	point Pt3 <-point((width_and_height_of_environment/5),(width_and_height_of_environment - 250));
+ 	point Pt4 <-point((width_and_height_of_environment/2),(width_and_height_of_environment/5));
+ 	point Pt5 <-point((width_and_height_of_environment/2),(width_and_height_of_environment/2));
+ 	point Pt6 <-point((width_and_height_of_environment/2),(width_and_height_of_environment -250));
+ 	point Pt7 <-point((width_and_height_of_environment -250),(width_and_height_of_environment/10));
+ 	point Pt8 <-point((width_and_height_of_environment -250),(width_and_height_of_environment/2));
+ 	point Pt9 <-point((width_and_height_of_environment -250),(width_and_height_of_environment -250));
+ 	point Pt10 <-point((width_and_height_of_environment/1.6),(width_and_height_of_environment/1.6));
 
  	
  	 int nb_feu <-0;	
@@ -41,18 +52,17 @@ global {
 	
 	
 	float dangerEnvCraintifNonExperimente update: mean(habitantProfil1 collect(each.dangerEnvSurjectif));			// moyenne de la dangeriosite du milieu percu par des agents craintifs et non experimentes
-	float dangerEnvCraintifExperimente <-0.0;				// moyenne de la dangeriosite du milieu percu par des agents craintifs et experimentes
-	float dangerEnvOptimisteNonExperimente <-0.0;			// moyenne de la dangeriosite du milieu percu par des agents optimistes et non experimentes
-	float dangerEnvOptimisteExperimente <-0.0;				// moyenne de la dangeriosite du milieu percu par des agents optimistes et experimentes
-	float dangerEnvObjectifNonExperimente <-0.0;			// moyenne de la dangeriosite du milieu percu par des agents objectifs et non experimentes
-	float dangerEnvObjectifExperimente <-0.0;				// moyenne de la dangeriosite du milieu percu par des agents objectifs et experimentes
+	float dangerEnvCraintifExperimente update: mean(habitantProfil2 collect(each.dangerEnvSurjectif));				// moyenne de la dangeriosite du milieu percu par des agents craintifs et experimentes
+	float dangerEnvOptimisteNonExperimente update: mean(habitantProfil3 collect(each.dangerEnvSurjectif));			// moyenne de la dangeriosite du milieu percu par des agents optimistes et non experimentes
+	float dangerEnvOptimisteExperimente update: mean(habitantProfil4 collect(each.dangerEnvSurjectif));				// moyenne de la dangeriosite du milieu percu par des agents optimistes et experimentes
+	float dangerEnvObjectifNonExperimente update: mean(habitantProfil5 collect(each.dangerEnvSurjectif));			// moyenne de la dangeriosite du milieu percu par des agents objectifs et non experimentes
+	float dangerEnvObjectifExperimente update: mean(habitantProfil6 collect(each.dangerEnvSurjectif));				// moyenne de la dangeriosite du milieu percu par des agents objectifs et experimentes
 	
  	
 	init{
 		// Creation de nbreArbre arbres sains au départ
 	 	create arbre number: nbreArbre
 		{
-			set listArbreEnFeu value: ((self neighbors_at intervalPropagation) of_species arbre) where (each.state = 'burning');
 		} 
 		
 		// Creation de nbreBatiment batiment  au départ
@@ -61,50 +71,105 @@ global {
 		}
 		
 		// start fires
-		ask target: nbreFeu among (arbre as list)
-		{
-			set state value: 'burning';
-		}
+		//ask target: nbreFeu among (arbre as list)
+		//{
+			//set state value: 'burning';
+			//state<-burning;
+		//}
 		
-		set nb_feu value:length (listArbreEnFeu);
+		ask (nbreFeu among arbre) {
+        	state<-'burning';
+        }
+        
+        //Premier emplcement Pt1
+		create habitantProfil1 number: 1
+		create habitantProfil1 number: 1{location <-Pt1;}
+		create habitantProfil2 number: 1{location <-Pt1;}
+		create habitantProfil3 number: 1{location <-Pt1;}
+		create habitantProfil4 number: 1{location <-Pt1;}
+		create habitantProfil5 number: 1 {location <-Pt1;}
+		create habitantProfil6 number: 1{location <-Pt1;}
 		
-		create habitantProfil1 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-			
-		}
+		// Deuxieme emplacement Pt2
+		create habitantProfil1 number: 1{location <-Pt2;}
+		create habitantProfil2 number: 1{location <-Pt2;}
+		create habitantProfil3 number: 1{location <-Pt2;}
+		create habitantProfil4 number: 1{location <-Pt2;}
+		create habitantProfil5 number: 1 {location <-Pt2;}
+		create habitantProfil6 number: 1{location <-Pt2;}
 		
-		create habitantProfil2 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Troisieme emplacement Pt3
+		create habitantProfil1 number: 1{location <-Pt3;}
+		create habitantProfil2 number: 1{location <-Pt3;}
+		create habitantProfil3 number: 1{location <-Pt3;}
+		create habitantProfil4 number: 1{location <-Pt3;}
+		create habitantProfil5 number: 1 {location <-Pt3;}
+		create habitantProfil6 number: 1{location <-Pt3;}
 		
-		create habitantProfil3 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Quatrieme emplacmemet Pt4
+		create habitantProfil1 number: 1{location <-Pt4;}
+		create habitantProfil2 number: 1{location <-Pt4;}
+		create habitantProfil3 number: 1{location <-Pt4;}
+		create habitantProfil4 number: 1{location <-Pt4;}
+		create habitantProfil5 number: 1 {location <-Pt4;}
+		create habitantProfil6 number: 1{location <-Pt4;}
 		
-		create habitantProfil4 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Cinqieme emplacment Pt5
+		create habitantProfil1 number: 1{location <-Pt5;}
+		create habitantProfil2 number: 1{location <-Pt5;}
+		create habitantProfil3 number: 1{location <-Pt5;}
+		create habitantProfil4 number: 1{location <-Pt5;}
+		create habitantProfil5 number: 1 {location <-Pt5;}
+		create habitantProfil6 number: 1{location <-Pt5;}
 		
-		create habitantProfil5 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
 		
-		create habitantProfil6 number: nbreAgentProfil
-		{
-			//location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Sixieme emplacment Pt6
+		create habitantProfil1 number: 1{location <-Pt6;}
+		create habitantProfil2 number: 1{location <-Pt6;}
+		create habitantProfil3 number: 1{location <-Pt6;}
+		create habitantProfil4 number: 1{location <-Pt6;}
+		create habitantProfil5 number: 1 {location <-Pt6;}
+		create habitantProfil6 number: 1{location <-Pt6;}
+		
+		//Septieme emplcamnet Pt7
+		create habitantProfil1 number: 1{location <-Pt7;}
+		create habitantProfil2 number: 1{location <-Pt7;}
+		create habitantProfil3 number: 1{location <-Pt7;}
+		create habitantProfil4 number: 1{location <-Pt7;}
+		create habitantProfil5 number: 1 {location <-Pt7;}
+		create habitantProfil6 number: 1{location <-Pt7;}
+		
+		
+		//huitieme emplacment Pt8
+		create habitantProfil1 number: 1{location <-Pt8;}
+		create habitantProfil2 number: 1{location <-Pt8;}
+		create habitantProfil3 number: 1{location <-Pt8;}
+		create habitantProfil4 number: 1{location <-Pt8;}
+		create habitantProfil5 number: 1 {location <-Pt8;}
+		create habitantProfil6 number: 1{location <-Pt8;}
+		
+		//Neuvieme emplcement Pt9
+		create habitantProfil1 number: 1{location <-Pt9;}
+		create habitantProfil2 number: 1{location <-Pt9;}
+		create habitantProfil3 number: 1{location <-Pt9;}
+		create habitantProfil4 number: 1{location <-Pt9;}
+		create habitantProfil5 number: 1 {location <-Pt9;}
+		create habitantProfil6 number: 1{location <-Pt9;}
+		
+		//Dixieme emplcament Pt10
+		create habitantProfil1 number: 1{location <-Pt10;}
+		create habitantProfil2 number: 1{location <-Pt10;}
+		create habitantProfil3 number: 1{location <-Pt10;}
+		create habitantProfil4 number: 1{location <-Pt10;}
+		create habitantProfil5 number: 1 {location <-Pt10;}
+		create habitantProfil6 number: 1{location <-Pt10;}
 
 	}
 	
 	float fearEnvCraintifNonExperimente update: mean(habitantProfil1 collect(each.fearEnv));				// moyenne du nviveau d'intensite de la peur des agents craintifs et non experimentes
 	float fearEnvCraintifExperimente update: mean(habitantProfil2 collect(each.fearEnv));					// moyenne du nviveau d'intensite de la peur des agents craintifs et experimentes
 	float fearEnvOptimisteNonExperimente update: mean(habitantProfil3 collect(each.fearEnv));				// moyenne du nviveau d'intensite de la peur des agents optimistes et non experimentes
-	float fearEnvOptimisteExperimente update: mean(habitantProfil4 collect(each.fearEnv));				// moyenne du nviveau d'intensite de la peur des agents optimistes et experimentes
+	float fearEnvOptimisteExperimente update: mean(habitantProfil4 collect(each.fearEnv));					// moyenne du nviveau d'intensite de la peur des agents optimistes et experimentes
 	float fearEnvObjectifNonExperimente update: mean(habitantProfil5 collect(each.fearEnv));				// moyenne du nviveau d'intensite de la peur des agents objectifs et non experimentes
 	float fearEnvObjectifExperimente update: mean(habitantProfil6 collect(each.fearEnv));					// moyenne du nviveau d'intensite de la peur des agents objectifs et experimentes	
 	
@@ -145,7 +210,6 @@ species inflammable control: fsm{
 			}	
 			do action: die;
 		}
-
 		
 	}
 
@@ -221,14 +285,14 @@ species batiment parent: inflammable
 		
 		list listFeuArbre update: (arbre at_distance rayonPerception) where (each.state = 'burning');
 		
-		list listFeuBatiement update: (batiment at_distance rayonPerception) where (each.state = 'burning');
+		list listFeuBatiment update: (batiment at_distance rayonPerception) where (each.state = 'burning');
 		
 		//list listFeu <- listFeuArbre union listFeuBatiement;
 				
 		init
 		{
 			rayonPerception <- PerceptionRange;
-			location <-point((width_and_height_of_environment/2 - 2 * size) + size,(width_and_height_of_environment/2 - 2 * size) + size);
+			//location <-point((width_and_height_of_environment/2 - 2 * size) + size,(width_and_height_of_environment/2 - 2 * size) + size);
 		}
 		
 		
@@ -342,7 +406,7 @@ species batiment parent: inflammable
 	
 		
 	
-experiment modele3 type: gui {
+experiment modele3Simple type: gui {
 	
 	parameter "nombre d'arbres" var: nbreArbre <- 200 min: 50 max: 500 category: "Environment"; 				// parametre d'entree pour definir le nombre d'arbre a creer au debut de la simulation. Par defaut c'est 100
 	parameter "nombre de feux" var: nbreFeu <- 50 min: 50 max: 500 category: "Environment";						// parametre d'entree pour definir le nombre de feu au debut de la simulation. par defaut 10 foyers sont crees
@@ -388,4 +452,25 @@ experiment modele3 type: gui {
 		}
 		
 	}
+}
+
+
+experiment 'Mode batch 50 repetitions' type: batch repeat: 50 keep_seed: true until: ( time > 2000 ) {
+	parameter "perception d'un individu peureux" var:percepSubjectivityPeur <- 1.5 		category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent pareux 
+	parameter "familiarite d'un individu non familier" var:dangerFamNonFami <- 0.1 		category: "Habitant";	// parametre d'entree pour definir le coefficient de familiarite au danger  par un agent non familier 
+	parameter "familiarite d'un individu experimente" var:dangerFamExp <- 0.8 			category: "Habitant";	// parametre d'entree pour definir lle coefficient de familiarite au danger  par un agent familier 
+	parameter "perception d'un individu optimiste" var:percepSubjectivityOpti <- 0.5 	category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent optimiste 
+	parameter "perception d'un individu objectif" var:percepSubjectivityObjectif <- 1.0 category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent objectif 
+	parameter "champ de vision d'un individu" var:PerceptionRange <- 50					category: "Habitant";	// parametre d'entree pour definir le champ de vison d'un habitant
+	
+	
+	//the permanent section allows to define a output section that will be kept during all the batch experiment
+	permanent {
+		display Moyenne {
+			chart "fearEnvCraintifNonExperimente" type: series {
+				data "Mean" value: mean(simulations collect each.fearEnvCraintifNonExperimente ) style: spline color: #blue ;
+		}	
+	}
+}
+
 }

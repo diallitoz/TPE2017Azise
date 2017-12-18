@@ -31,6 +31,18 @@ global {
  	
  	 int nb_feu <-0;	
  	 
+ 	point Pt1 <-point((width_and_height_of_environment/5),(width_and_height_of_environment/5));
+ 	point Pt2 <-point((width_and_height_of_environment/5),(width_and_height_of_environment/2));
+ 	point Pt3 <-point((width_and_height_of_environment/5),(width_and_height_of_environment - 250));
+ 	point Pt4 <-point((width_and_height_of_environment/2),(width_and_height_of_environment/5));
+ 	point Pt5 <-point((width_and_height_of_environment/2),(width_and_height_of_environment/2));
+ 	point Pt6 <-point((width_and_height_of_environment/2),(width_and_height_of_environment -250));
+ 	point Pt7 <-point((width_and_height_of_environment -250),(width_and_height_of_environment/10));
+ 	point Pt8 <-point((width_and_height_of_environment -250),(width_and_height_of_environment/2));
+ 	point Pt9 <-point((width_and_height_of_environment -250),(width_and_height_of_environment -250));
+ 	point Pt10 <-point((width_and_height_of_environment/1.6),(width_and_height_of_environment/1.6));
+ 	 
+ 	 
  	 float percepSubjectivityPeur;		// peureux
 	float dangerFamNonFami;				// non familier
 	float dangerFamExp;					// familier
@@ -51,7 +63,6 @@ global {
 		// Creation de nbreArbre arbres sains au départ
 	 	create arbre number: nbreArbre
 		{
-			set listArbreEnFeu value: ((self neighbors_at intervalPropagation) of_species arbre) where (each.state = 'burning');
 		} 
 		
 		// Creation de nbreBatiment batiment  au départ
@@ -60,42 +71,100 @@ global {
 		}
 		
 		// start fires
+		
+		ask (nbreFeu among arbre) {
+        	state<-'burning';
+        }
+		/* 
 		ask target: nbreFeu among (arbre as list)
 		{
 			set state value: 'burning';
-		}
+		} */
 		
-		set nb_feu value:length (listArbreEnFeu);
 		
-		create habitantProfil1 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
 		
-		create habitantProfil2 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		 //Premier emplcement Pt1
+		create habitantProfil1 number: 1
+		create habitantProfil1 number: 1{location <-Pt1;}
+		create habitantProfil2 number: 1{location <-Pt1;}
+		create habitantProfil3 number: 1{location <-Pt1;}
+		create habitantProfil4 number: 1{location <-Pt1;}
+		create habitantProfil5 number: 1 {location <-Pt1;}
+		create habitantProfil6 number: 1{location <-Pt1;}
 		
-		create habitantProfil3 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		// Deuxieme emplacement Pt2
+		create habitantProfil1 number: 1{location <-Pt2;}
+		create habitantProfil2 number: 1{location <-Pt2;}
+		create habitantProfil3 number: 1{location <-Pt2;}
+		create habitantProfil4 number: 1{location <-Pt2;}
+		create habitantProfil5 number: 1 {location <-Pt2;}
+		create habitantProfil6 number: 1{location <-Pt2;}
 		
-		create habitantProfil4 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Troisieme emplacement Pt3
+		create habitantProfil1 number: 1{location <-Pt3;}
+		create habitantProfil2 number: 1{location <-Pt3;}
+		create habitantProfil3 number: 1{location <-Pt3;}
+		create habitantProfil4 number: 1{location <-Pt3;}
+		create habitantProfil5 number: 1 {location <-Pt3;}
+		create habitantProfil6 number: 1{location <-Pt3;}
 		
-		create habitantProfil5 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Quatrieme emplacmemet Pt4
+		create habitantProfil1 number: 1{location <-Pt4;}
+		create habitantProfil2 number: 1{location <-Pt4;}
+		create habitantProfil3 number: 1{location <-Pt4;}
+		create habitantProfil4 number: 1{location <-Pt4;}
+		create habitantProfil5 number: 1 {location <-Pt4;}
+		create habitantProfil6 number: 1{location <-Pt4;}
 		
-		create habitantProfil6 number: nbreAgentProfil
-		{
-			location <-point(width_and_height_of_environment/2, width_and_height_of_environment/2);
-		}
+		//Cinqieme emplacment Pt5
+		create habitantProfil1 number: 1{location <-Pt5;}
+		create habitantProfil2 number: 1{location <-Pt5;}
+		create habitantProfil3 number: 1{location <-Pt5;}
+		create habitantProfil4 number: 1{location <-Pt5;}
+		create habitantProfil5 number: 1 {location <-Pt5;}
+		create habitantProfil6 number: 1{location <-Pt5;}
+		
+		
+		//Sixieme emplacment Pt6
+		create habitantProfil1 number: 1{location <-Pt6;}
+		create habitantProfil2 number: 1{location <-Pt6;}
+		create habitantProfil3 number: 1{location <-Pt6;}
+		create habitantProfil4 number: 1{location <-Pt6;}
+		create habitantProfil5 number: 1 {location <-Pt6;}
+		create habitantProfil6 number: 1{location <-Pt6;}
+		
+		//Septieme emplcamnet Pt7
+		create habitantProfil1 number: 1{location <-Pt7;}
+		create habitantProfil2 number: 1{location <-Pt7;}
+		create habitantProfil3 number: 1{location <-Pt7;}
+		create habitantProfil4 number: 1{location <-Pt7;}
+		create habitantProfil5 number: 1 {location <-Pt7;}
+		create habitantProfil6 number: 1{location <-Pt7;}
+		
+		
+		//huitieme emplacment Pt8
+		create habitantProfil1 number: 1{location <-Pt8;}
+		create habitantProfil2 number: 1{location <-Pt8;}
+		create habitantProfil3 number: 1{location <-Pt8;}
+		create habitantProfil4 number: 1{location <-Pt8;}
+		create habitantProfil5 number: 1 {location <-Pt8;}
+		create habitantProfil6 number: 1{location <-Pt8;}
+		
+		//Neuvieme emplcement Pt9
+		create habitantProfil1 number: 1{location <-Pt9;}
+		create habitantProfil2 number: 1{location <-Pt9;}
+		create habitantProfil3 number: 1{location <-Pt9;}
+		create habitantProfil4 number: 1{location <-Pt9;}
+		create habitantProfil5 number: 1 {location <-Pt9;}
+		create habitantProfil6 number: 1{location <-Pt9;}
+		
+		//Dixieme emplcament Pt10
+		create habitantProfil1 number: 1{location <-Pt10;}
+		create habitantProfil2 number: 1{location <-Pt10;}
+		create habitantProfil3 number: 1{location <-Pt10;}
+		create habitantProfil4 number: 1{location <-Pt10;}
+		create habitantProfil5 number: 1 {location <-Pt10;}
+		create habitantProfil6 number: 1{location <-Pt10;}
 		
 
 	}
@@ -121,9 +190,7 @@ species inflammable control: fsm{
 		
 		state intact initial: true
 		{
-			
 			color<- color;
-
 		}
 
 		state burning
@@ -391,6 +458,8 @@ experiment modele4 type: gui {
 			{
 				data 'Intacts' value: list(arbre) count (each.state = 'intact') style: line color: rgb("green");
 				data 'En feu' value: list(arbre) count (each.state = 'burning') style: line color: rgb('red');
+				data 'Intacts bat' value: list(batiment) count (each.state = 'intact') style: line color: rgb("blue");
+				data 'En feu bat' value: list(batiment) count (each.state = 'buring') style: line color: rgb("brown");
 			}
 
 		}
@@ -408,5 +477,25 @@ experiment modele4 type: gui {
 			}
 		}
 		
+	}
+}
+
+experiment 'Mode batch 50 repetitions' type: batch repeat: 50 keep_seed: true until: ( time > 2000 ) {
+
+	parameter "perception d'un individu peureux" var:percepSubjectivityPeur <- 1.5		category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent pareux 
+	parameter "familiarite d'un individu non familier" var:dangerFamNonFami <- 0.1 		category: "Habitant";	// parametre d'entree pour definir le coefficient de familiarite au danger  par un agent non familier 
+	parameter "familiarite d'un individu experimente" var:dangerFamExp <- 0.8 			category: "Habitant";	// parametre d'entree pour definir lle coefficient de familiarite au danger  par un agent familier 
+	parameter "perception d'un individu optimiste" var:percepSubjectivityOpti <- 0.5 	category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent optimiste 
+	parameter "perception d'un individu objectif" var:percepSubjectivityObjectif <- 1.0 category: "Habitant";	// parametre d'entree pour definir la perception sujective de la dangeriosite du milieu par un agent objectif 
+	parameter "champ de vision d'un individu" var:PerceptionRange <- 50					category: "Habitant";	// parametre d'entree pour definir le champ de vison d'un habitant
+	
+	
+	//the permanent section allows to define a output section that will be kept during all the batch experiment
+	permanent {
+		display Moyenne {
+			chart "fearEnvCraintifNonExperimente" type: series {	
+				data "Mean" value: mean(simulations collect each.fearEnvCraintifNonExperimente ) style: spline color: #blue ;
+			}
+		}	
 	}
 }
